@@ -1,10 +1,26 @@
 package engine;
 
-import java.util.ArrayList;
-
-//TODO По другому хранить
 public class QuestionStruct {
-    public String title;
-    public String text;
-    public ArrayList<String> options = new ArrayList<>();
+    private String title;
+    private String text;
+    private String[] options;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getTitle() {
+        return this.title;
+    }
+    public void setText(String text) {
+        this.text = text;
+    }
+    public String getText() {
+        return this.text;
+    }
+    public void setOptions(String[] options) {
+        this.options = options.clone();
+    }
+    public String[] getOptions() {
+        return this.options;
+    }
 }

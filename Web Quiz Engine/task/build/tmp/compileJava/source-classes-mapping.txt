@@ -2,8 +2,8 @@ engine/QuestionStruct.java
  engine.QuestionStruct
 engine/WebQuizEngine.java
  engine.WebQuizEngine
-engine/parser.java
- engine.parser
+engine/GenerateAnswer.java
+ engine.GenerateAnswer
 engine/AnswerStruct.java
  engine.AnswerStruct
 engine/Question.java
