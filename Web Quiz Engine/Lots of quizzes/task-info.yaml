@@ -241,14 +241,6 @@ files:
         }
     }
   learner_created: false
-- name: src/engine/RightAnswer.json
-  visible: true
-  text: |-
-    {
-      "success" : "true",
-      "feedback" : "Congratulations, you're right!"
-    }
-  learner_created: true
 - name: src/engine/QuestionStruct.java
   visible: true
   text: |
@@ -260,23 +252,6 @@ files:
         public String title;
         public String text;
         public ArrayList<String> options = new ArrayList<>();
-    }
-  learner_created: true
-- name: src/engine/Date.json
-  visible: true
-  text: |-
-    {
-      "title": "The Java Logo",
-      "text": "What is depicted on the Java logo?",
-      "options": ["Robot","Tea leaf","Cup of coffee","Bug"]
-    }
-  learner_created: true
-- name: src/engine/FalseAnswer.json
-  visible: true
-  text: |-
-    {
-      "success" : "false",
-      "feedback" : "Wrong answer! Please, try again."
     }
   learner_created: true
 - name: src/engine/AnswerStruct.java
@@ -403,6 +378,12 @@ files:
         }
     }
   learner_created: true
+- name: src/engine/ReceiveQuestion.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/91/stages/505/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Tue, 08 Dec 2020 08:00:22 UTC
 record: -1

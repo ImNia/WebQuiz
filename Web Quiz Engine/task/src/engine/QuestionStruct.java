@@ -1,10 +1,17 @@
 package engine;
 
 public class QuestionStruct {
+    private int id;
     private String title;
     private String text;
     private String[] options;
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getId() {
+        return this.id;
+    }
     public void setTitle(String title) {
         this.title = title;
     }
