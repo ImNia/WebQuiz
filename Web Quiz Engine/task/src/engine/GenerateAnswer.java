@@ -9,19 +9,20 @@ public class GenerateAnswer {
     public static Map<Integer, Integer> response = new HashMap<>();
     static ArrayList<QuestionStruct> questionAvailable = new ArrayList<>();
 
-    public static QuestionStruct createQuestion(ReceiveQuestion question) {
+    public static QuestionStruct createQuestion(QuestionStruct question) {
         if (question == null) return null;
 
-        QuestionStruct resultQuestion = new QuestionStruct();
         COUNT_QUESTION++;
-        resultQuestion.setId(COUNT_QUESTION);
-        resultQuestion.setTitle(question.title);
-        resultQuestion.setText(question.text);
-        resultQuestion.setOptions(question.options);
-        ResponseContainer(COUNT_QUESTION, question.answer);
-
-        questionAvailable.add(resultQuestion);
-        return resultQuestion;
+        question.setId(COUNT_QUESTION);
+        /*if (question.getAnswer().length == 0) {
+            int[] tmp = new int[question.getOptions().length];
+            for (int i = 0; i < question.getOptions().length; i++) {
+                tmp[i] = i;
+            }
+            question.setAnswer(tmp);
+        }*/
+        questionAvailable.add(question);
+        return question;
     }
 
     public static QuestionStruct getQuestion(int numberQuestion) {

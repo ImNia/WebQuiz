@@ -1,47 +1,28 @@
 package engine;
 
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 @RestController
 public class Question {
-
-    /*@RequestMapping(value = "/api/quiz", method = RequestMethod.GET)
-    public QuestionStruct questionPage() {
-        QuestionStruct tmp;
-        tmp = GenerateAnswer.getQuestion((int) ( 1 + Math.random() * GenerateAnswer.COUNT_QUESTION));
-        //System.out.println(tmp.text);
-        return tmp;
-    }
-    //@PostMapping(path = "/app/quiz")
-    @RequestMapping(value = "/api/quiz", method = RequestMethod.POST)
-    public AnswerStruct answerPage(@RequestParam(name="answer") String value) {
-        AnswerStruct tmp;
-        System.out.println(value);
-        int answer = Integer.parseInt(value);
-        if(answer == 2) {
-            tmp = GenerateAnswer.rightAnswer(true);
-        } else {
-            tmp = GenerateAnswer.rightAnswer(false);
-        }
-        return tmp;
-    }*/
-
     @RequestMapping(value = "/api/quizzes/{id}", method = RequestMethod.GET)
     public QuestionStruct questionPage(@PathVariable int id) {
-        if (id < 0 || id > GenerateAnswer.COUNT_QUESTION) {
+        if (id <= 0 || id > GenerateAnswer.COUNT_QUESTION) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return GenerateAnswer.getQuestion(id - 1);
     }
 
-    /* Создаем новый вопрос по запросу
-    * */
     @PostMapping(value = "/api/quizzes", consumes = "application/json")
-    public QuestionStruct allQuestion(@RequestBody ReceiveQuestion question) {
+    public QuestionStruct receiveQuestion(@RequestBody QuestionStruct question) {
+        if (question.getTitle() == null || question.getText() == null || question.getOptions() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         return GenerateAnswer.createQuestion(question);
     }
 
@@ -54,14 +35,36 @@ public class Question {
         return exist;
     }
 
-    @RequestMapping(value = "/api/quizzes/{id}/solve", method = RequestMethod.POST)
-    public AnswerStruct answerPage(@PathVariable int id, @RequestParam(name="answer") String value) {
-        AnswerStruct answer;
-        if(Integer.parseInt(value) == GenerateAnswer.response.get(id)) {
-            answer = GenerateAnswer.rightAnswer(true);
-        } else {
-            answer = GenerateAnswer.rightAnswer(false);
+    //@RequestMapping(value = "/api/quizzes/{id}/solve", method = RequestMethod.POST)
+    @PostMapping(value = "/api/quizzes/{id}/solve", consumes = "application/json")
+    public AnswerStruct answerPage(@PathVariable int id, @RequestBody AnswerUserStruct value) {
+        if (value.getAnswer() == null) {
+            if (GenerateAnswer.questionAvailable.get(id).getAnswer() == null) {
+                return GenerateAnswer.rightAnswer(true);
+            } else {
+                return GenerateAnswer.rightAnswer(false);
+            }
         }
-        return answer;
+        ArrayList<Integer> answerUser = new ArrayList<>();
+        for (int tmp: value.getAnswer()) {
+            answerUser.add(tmp);
+        }
+        Collections.sort(answerUser);
+
+        ArrayList<Integer> answerMaster = new ArrayList<>();
+        if (GenerateAnswer.questionAvailable.get(id - 1).getAnswer() != null) {
+            for (int t : GenerateAnswer.questionAvailable.get(id - 1).getAnswer()) {
+                answerMaster.add(t);
+            }
+        }
+        if (answerUser.size() != answerMaster.size())
+            return GenerateAnswer.rightAnswer(false);
+
+        for (int i = 0; i < answerUser.size(); i++) {
+            if (answerUser.get(i) != answerMaster.get(i)) {
+                return GenerateAnswer.rightAnswer(false);
+            }
+        }
+        return GenerateAnswer.rightAnswer(true);
     }
 }
