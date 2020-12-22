@@ -2,25 +2,25 @@ package engine;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Question")
 public class QuestionStruct {
+    @GeneratedValue
+    @Column(name = "id")
     @Id
-    private int id;
+    private Integer id;
     private String title;
     private String text;
     private String[] options;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int[] answer;
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     public void setTitle(String title) {

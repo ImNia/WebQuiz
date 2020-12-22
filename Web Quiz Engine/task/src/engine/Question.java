@@ -1,5 +1,6 @@
 package engine;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,6 +11,10 @@ import java.util.Collections;
 
 @RestController
 public class Question {
+
+    @Autowired
+    public GenerateAnswer tmp;
+
     @RequestMapping(value = "/api/quizzes/{id}", method = RequestMethod.GET)
     public QuestionStruct questionPage(@PathVariable int id) {
         if (id <= 0 || id > GenerateAnswer.COUNT_QUESTION) {
@@ -23,7 +28,7 @@ public class Question {
         if (question.getTitle() == null || question.getText() == null || question.getOptions() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        return GenerateAnswer.createQuestion(question);
+        return tmp.createQuestion(question);
     }
 
     @RequestMapping(value = "/api/quizzes", method = RequestMethod.GET)
