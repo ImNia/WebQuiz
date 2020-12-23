@@ -17,10 +17,10 @@ public class Question {
 
     @RequestMapping(value = "/api/quizzes/{id}", method = RequestMethod.GET)
     public QuestionStruct questionPage(@PathVariable int id) {
-        if (id <= 0 || id > GenerateAnswer.COUNT_QUESTION) {
+        if (id <= 0 || tmp.getQuestion(id) == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return GenerateAnswer.getQuestion(id - 1);
+        return tmp.getQuestion(id);
     }
 
     @PostMapping(value = "/api/quizzes", consumes = "application/json")
@@ -32,15 +32,10 @@ public class Question {
     }
 
     @RequestMapping(value = "/api/quizzes", method = RequestMethod.GET)
-    public QuestionStruct[] existsQuestion() {
-        QuestionStruct[] exist = new QuestionStruct[GenerateAnswer.COUNT_QUESTION];
-        for (int i = 0; i < GenerateAnswer.COUNT_QUESTION; i++) {
-            exist[i] = GenerateAnswer.getQuestion(i);
-        }
-        return exist;
+    public ArrayList<QuestionStruct> existsQuestion() {
+        return tmp.getAllQuestion();
     }
 
-    //@RequestMapping(value = "/api/quizzes/{id}/solve", method = RequestMethod.POST)
     @PostMapping(value = "/api/quizzes/{id}/solve", consumes = "application/json")
     public AnswerStruct answerPage(@PathVariable int id, @RequestBody AnswerUserStruct value) {
         if (value.getAnswer() == null) {
@@ -71,5 +66,10 @@ public class Question {
             }
         }
         return GenerateAnswer.rightAnswer(true);
+    }
+
+    @RequestMapping(value = "/api/delete", method = RequestMethod.GET)
+    public void deleteQuestion() {
+        tmp.deleteBase();
     }
 }

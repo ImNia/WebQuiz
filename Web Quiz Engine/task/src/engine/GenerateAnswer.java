@@ -24,13 +24,16 @@ public class GenerateAnswer {
         questionStructRepository.save(question);
 
         COUNT_QUESTION++;
-        //question.setId(COUNT_QUESTION);
         questionAvailable.add(question);
         return question;
     }
 
-    public static QuestionStruct getQuestion(int numberQuestion) {
-        return questionAvailable.get(numberQuestion);
+    public QuestionStruct getQuestion(int numberQuestion) {
+        return questionStructRepository.findById(numberQuestion);
+    }
+
+    public ArrayList<QuestionStruct> getAllQuestion() {
+        return questionStructRepository.findAll();
     }
 
     public static void ResponseContainer(int id, int answer) {
@@ -46,5 +49,9 @@ public class GenerateAnswer {
             answer.setFeedback("Wrong answer! Please, try again.");
         }
         return answer;
+    }
+
+    public void deleteBase() {
+        questionStructRepository.deleteAll();
     }
 }
