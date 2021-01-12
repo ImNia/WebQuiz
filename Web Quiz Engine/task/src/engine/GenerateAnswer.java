@@ -3,9 +3,7 @@ package engine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GenerateAnswer {
@@ -14,17 +12,12 @@ public class GenerateAnswer {
     @Autowired
     private QuestionStructRepository questionStructRepository;
 
-    public static Map<Integer, Integer> response = new HashMap<>();
-    static ArrayList<QuestionStruct> questionAvailable = new ArrayList<>();
-
-
     public QuestionStruct createQuestion(QuestionStruct question) {
         if (question == null) return null;
         System.out.println(questionStructRepository.getClass());
         questionStructRepository.save(question);
 
         COUNT_QUESTION++;
-        questionAvailable.add(question);
         return question;
     }
 
@@ -36,10 +29,6 @@ public class GenerateAnswer {
         return questionStructRepository.findAll();
     }
 
-    public static void ResponseContainer(int id, int answer) {
-        response.put(id, answer);
-    }
-
     public static AnswerStruct rightAnswer(boolean correct) {
         AnswerStruct answer = new AnswerStruct();
         answer.setSuccess(correct);
@@ -49,6 +38,17 @@ public class GenerateAnswer {
             answer.setFeedback("Wrong answer! Please, try again.");
         }
         return answer;
+    }
+
+    public AnswerStruct checkAnswer(int id, AnswerUserStruct value) {
+        List<Integer> userAnswer = value.getAnswer();
+        List<Integer> masterAnswer = questionStructRepository.findById(id).getAnswer();
+        Collections.sort(masterAnswer);
+        Collections.sort(userAnswer);
+        if (masterAnswer.containsAll(userAnswer) && userAnswer.containsAll(masterAnswer)) {
+            return rightAnswer(true);
+        }
+        return rightAnswer(false);
     }
 
     public void deleteBase() {

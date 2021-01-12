@@ -3,6 +3,7 @@ package engine;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Question")
@@ -13,9 +14,11 @@ public class QuestionStruct {
     private Integer id;
     private String title;
     private String text;
-    private String[] options;
+    @ElementCollection
+    private List<String> options;
+    @ElementCollection
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private int[] answer;
+    private List<Integer> answer;
 
     public void setId(Integer id) {
         this.id = id;
@@ -35,17 +38,17 @@ public class QuestionStruct {
     public String getText() {
         return this.text;
     }
-    public void setOptions(String[] options) {
-        this.options = options.clone();
+    public void setOptions(List<String> options) {
+        this.options = options;
     }
-    public String[] getOptions() {
+    public List<String> getOptions() {
         return this.options;
     }
 
-    public void setAnswer(int[] answer) {
-        this.answer = answer.clone();
+    public void setAnswer(List<Integer> answer) {
+        this.answer = answer;
     }
-    public int[] getAnswer() {
+    public List<Integer> getAnswer() {
         return this.answer;
     }
 }

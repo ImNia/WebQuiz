@@ -15,7 +15,7 @@ public class WebQuizEngine {
         SpringApplication.run(WebQuizEngine.class, args);
     }
 
-    @Bean
+    /*@Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
 
@@ -28,5 +28,5 @@ public class WebQuizEngine {
             }
 
         };
-    }
+    }*/
 }

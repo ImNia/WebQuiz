@@ -1,12 +1,14 @@
 package engine;
 
-public class AnswerUserStruct {
-    private int[] answer;
+import java.util.List;
 
-    public void setAnswer(int[] answer) {
-        this.answer = answer.clone();
+public class AnswerUserStruct {
+    private List<Integer> answer;
+
+    public void setAnswer(List<Integer> answer) {
+        this.answer = answer;
     }
-    public int[] getAnswer() {
+    public List<Integer> getAnswer() {
         return this.answer;
     }
 }
